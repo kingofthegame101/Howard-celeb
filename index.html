@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>Insight | Celebrity Fame Ranking</title>
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com" rel="preconnect"/>
+  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Manrope:wght@600;700;800&amp;display=swap" rel="stylesheet"/>
+  <!-- Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "surface": "#f7f9fb",
+            "on-primary-container": "#fffbff",
+            "surface-bright": "#f7f9fb",
+            "outline-variant": "#c7c4d7",
+            "on-surface": "#191c1e",
+            "on-tertiary-fixed-variant": "#004395",
+            "secondary-fixed-dim": "#d0bcff",
+            "inverse-primary": "#c0c1ff",
+            "on-secondary-fixed": "#23005c",
+            "error-container": "#ffdad6",
+            "on-tertiary-fixed": "#001a42",
+            "error": "#ba1a1a",
+            "tertiary-container": "#2170e4",
+            "on-surface-variant": "#464554",
+            "on-tertiary": "#ffffff",
+            "surface-container-high": "#e6e8ea",
+            "inverse-on-surface": "#eff1f3",
+            "surface-dim": "#d8dadc",
+            "inverse-surface": "#2d3133",
+            "surface-container-lowest": "#ffffff",
+            "on-primary": "#ffffff",
+            "on-secondary": "#ffffff",
+            "primary-fixed": "#e1e0ff",
+            "tertiary-fixed": "#d8e2ff",
+            "on-primary-fixed-variant": "#2f2ebe",
+            "secondary": "#6b38d4",
+            "surface-container-low": "#f2f4f6",
+            "on-secondary-fixed-variant": "#5516be",
+            "tertiary-fixed-dim": "#adc6ff",
+            "surface-variant": "#e0e3e5",
+            "outline": "#767586",
+            "primary-fixed-dim": "#c0c1ff",
+            "surface-tint": "#494bd6",
+            "primary-container": "#6063ee",
+            "on-secondary-container": "#fffbff",
+            "surface-container-highest": "#e0e3e5",
+            "on-error": "#ffffff",
+            "on-background": "#191c1e",
+            "on-tertiary-container": "#fefcff",
+            "secondary-fixed": "#e9ddff",
+            "background": "#f7f9fb",
+            "primary": "#4648d4",
+            "secondary-container": "#8455ef",
+            "on-primary-fixed": "#07006c",
+            "on-error-container": "#93000a",
+            "surface-container": "#eceef0",
+            "tertiary": "#0058be"
+          },
+          fontFamily: {
+            "headline": ["Manrope"],
+            "body": ["Inter"],
+            "label": ["Inter"]
+          },
+          borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+        },
+      },
+    }
+  </script>
+  <style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      vertical-align: middle;
+    }
+    body { font-family: 'Inter', sans-serif; }
+    h1, h2, h3 { font-family: 'Manrope', sans-serif; }
+    .loading-spinner {
+      border: 3px solid #f3f3f3;
+      border-top: 3px solid #4648d4;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    .skeleton {
+      background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.5s infinite;
+    }
+    @keyframes shimmer {
+      0% { background-position: -200% 0; }
+      100% { background-position: 200% 0; }
+    }
+  </style>
+</head>
+<body class="bg-surface text-on-surface">
+  <!-- TopNavBar -->
+  <header class="bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl docked full-width top-0 sticky z-50 shadow-sm dark:shadow-none font-manrope antialiased">
+    <div class="flex justify-between items-center w-full px-6 py-3 max-w-[1600px] mx-auto">
+      <div class="flex items-center gap-8">
+        <a href="index.html" class="text-xl font-bold tracking-tight text-slate-900 dark:text-slate-100">Insight</a>
+        <!-- Search Bar -->
+        <div class="relative hidden md:block w-72">
+          <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">search</span>
+          <input id="searchInput" class="w-full bg-slate-100 dark:bg-slate-800/50 border-none rounded-xl pl-10 py-2 text-sm focus:ring-2 focus:ring-indigo-600 transition-all" placeholder="Search celebrity profiles..." type="text"/>
+        </div>
+      </div>
+      <nav class="hidden lg:flex items-center gap-6">
+        <a class="text-indigo-600 dark:text-indigo-400 font-semibold border-b-2 border-indigo-600 px-1 py-1" href="index.html">Ranking</a>
+        <a class="text-slate-500 dark:text-slate-400 font-medium hover:text-slate-900 dark:hover:text-slate-100 px-1 py-1 transition-colors duration-200" href="#news">Latest Updates</a>
+        <a class="text-slate-500 dark:text-slate-400 font-medium hover:text-slate-900 dark:hover:text-slate-100 px-1 py-1 transition-colors duration-200" href="#sources">Source Analysis</a>
+      </nav>
+      <div class="flex items-center gap-3">
+        <button onclick="refreshData()" class="p-2 text-slate-500 hover:bg-slate-50/50 transition-colors duration-200 active:scale-95">
+          <span class="material-symbols-outlined">refresh</span>
+        </button>
+        <button class="p-2 text-slate-500 hover:bg-slate-50/50 transition-colors duration-200 active:scale-95 relative">
+          <span class="material-symbols-outlined">notifications</span>
+          <span class="absolute top-2 right-2 w-2 h-2 bg-indigo-600 rounded-full border-2 border-white"></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-[1600px] mx-auto px-6 py-8">
+    <!-- Hero Stats Cluster (Bento Layout) -->
+    <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6 mb-12">
+      <div class="md:col-span-2 p-8 rounded-xl bg-gradient-to-br from-primary to-secondary text-on-primary-container shadow-lg flex flex-col justify-between relative overflow-hidden min-h-[220px]">
+        <div class="relative z-10">
+          <p class="text-sm font-medium opacity-80 mb-1">Global Market Sentiment</p>
+          <h2 class="text-3xl font-extrabold tracking-tight mb-4">Celebrity Capital is <span id="marketTrend">Loading...</span></h2>
+          <p class="text-lg font-light max-w-md">Real-time Fame Score aggregation across social networks indicates market trends for celebrity talent.</p>
+        </div>
+        <div class="relative z-10 flex gap-4 mt-6">
+          <button onclick="window.location.href='#rankings'" class="bg-white/20 backdrop-blur-md px-6 py-2 rounded-xl font-semibold hover:bg-white/30 transition-all active:scale-95">View Rankings</button>
+        </div>
+        <span class="material-symbols-outlined absolute -right-8 -bottom-8 text-[180px] opacity-10 rotate-12" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+      </div>
+
+      <!-- Top Gainer Card -->
+      <div id="topGainerCard" class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant/15 flex flex-col justify-between">
+        <div>
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-xs font-bold uppercase tracking-widest text-on-surface-variant">Top Ranked</span>
+            <span id="topGainerBadge" class="text-xs px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 font-bold">-</span>
+          </div>
+          <div class="flex items-center gap-4 mt-4">
+            <div class="w-14 h-14 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-white font-bold text-xl" id="topGainerAvatar">-</div>
+            <div>
+              <p id="topGainerName" class="font-headline font-bold text-lg leading-tight">Loading...</p>
+              <p id="topGainerScore" class="text-sm text-on-surface-variant">Fame Index: -</p>
+            </div>
+          </div>
+        </div>
+        <div class="mt-6 pt-4 border-t border-slate-50">
+          <div class="flex justify-between items-end">
+            <div class="flex gap-1" id="topGainerChart">
+              <div class="w-1.5 h-4 bg-primary/20 rounded-full"></div>
+              <div class="w-1.5 h-6 bg-primary/40 rounded-full"></div>
+              <div class="w-1.5 h-8 bg-primary/60 rounded-full"></div>
+              <div class="w-1.5 h-10 bg-primary/80 rounded-full"></div>
+              <div class="w-1.5 h-12 bg-primary rounded-full"></div>
+            </div>
+            <span id="topGainerTrend" class="text-xs text-on-surface-variant font-medium">-</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Total Tracked Card -->
+      <div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant/15 flex flex-col justify-center items-center text-center">
+        <p class="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-2">Total Celebs Tracked</p>
+        <div id="totalTracked" class="text-5xl font-black text-primary mb-2">-</div>
+        <p id="totalTrackedSub" class="text-xs text-on-surface-variant">Loading data...</p>
+      </div>
+    </div>
+
+    <!-- Ranking Table Section -->
+    <section id="rankings" class="bg-surface-container-lowest rounded-2xl shadow-sm border border-outline-variant/10 overflow-hidden">
+      <div class="px-8 py-6 border-b border-surface-container-low flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <h3 class="text-xl font-bold text-on-surface">Fame Leaderboard</h3>
+          <p class="text-sm text-on-surface-variant">Real-time market capital and credibility scores</p>
+        </div>
+        <div class="flex items-center gap-3">
+          <select id="platformFilter" onchange="filterResults()" class="px-4 py-2 bg-surface-container-low rounded-xl text-sm font-semibold border-none focus:ring-2 focus:ring-primary">
+            <option value="all">All Platforms</option>
+            <option value="Instagram">Instagram</option>
+            <option value="Facebook">Facebook</option>
+            <option value="YouTube">YouTube</option>
+            <option value="TikTok">TikTok</option>
+          </select>
+          <button onclick="sortResults()" class="flex items-center gap-2 px-4 py-2 bg-surface-container-low rounded-xl text-sm font-semibold hover:bg-surface-container-high transition-colors">
+            <span class="material-symbols-outlined text-sm">sort</span>
+            Sort
+          </button>
+        </div>
+      </div>
+      <div class="overflow-x-auto">
+        <table class="w-full border-collapse">
+          <thead>
+            <tr class="bg-surface-container-low/30">
+              <th class="px-8 py-4 text-left text-xs font-bold text-on-surface-variant uppercase tracking-widest">Name</th>
+              <th class="px-8 py-4 text-left text-xs font-bold text-on-surface-variant uppercase tracking-widest">Fame Score</th>
+              <th class="px-8 py-4 text-left text-xs font-bold text-on-surface-variant uppercase tracking-widest">Credibility</th>
+              <th class="px-8 py-4 text-left text-xs font-bold text-on-surface-variant uppercase tracking-widest">Status</th>
+              <th class="px-8 py-4 text-left text-xs font-bold text-on-surface-variant uppercase tracking-widest">Top Source</th>
+              <th class="px-8 py-4"></th>
+            </tr>
+          </thead>
+          <tbody id="rankingsBody" class="divide-y divide-surface-container-low">
+            <!-- Loading skeleton -->
+            <tr>
+              <td colspan="6" class="px-8 py-12 text-center">
+                <div class="flex flex-col items-center gap-4">
+                  <div class="loading-spinner"></div>
+                  <p class="text-on-surface-variant">Loading celebrity data...</p>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="px-8 py-4 bg-surface-container-low/30 border-t border-surface-container-low flex justify-between items-center">
+        <p id="paginationInfo" class="text-xs text-on-surface-variant">Showing 0 results</p>
+        <div class="flex gap-2">
+          <button onclick="prevPage()" class="px-3 py-1 rounded-lg border border-outline-variant bg-white text-xs font-bold hover:bg-slate-50 transition-colors">Previous</button>
+          <button onclick="nextPage()" class="px-3 py-1 rounded-lg bg-primary text-white text-xs font-bold shadow-sm active:scale-95 transition-transform">Next</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Secondary Insights Grid -->
+    <div id="news" class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-12">
+      <div class="bg-surface-container-low rounded-2xl p-6 flex flex-col gap-4">
+        <h4 class="text-lg font-bold font-headline">Recent Volatility</h4>
+        <div id="volatilityList" class="space-y-3">
+          <div class="skeleton h-16 rounded-xl"></div>
+          <div class="skeleton h-16 rounded-xl"></div>
+        </div>
+      </div>
+      <div class="bg-surface-container-low rounded-2xl p-6 flex flex-col gap-4">
+        <h4 class="text-lg font-bold font-headline">Top Sources</h4>
+        <div id="topSourcesList" class="flex gap-4 overflow-x-auto pb-2">
+          <div class="skeleton w-48 h-24 rounded-xl flex-shrink-0"></div>
+          <div class="skeleton w-48 h-24 rounded-xl flex-shrink-0"></div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- FAB Action -->
+  <button onclick="refreshData()" class="fixed bottom-8 right-8 w-14 h-14 bg-gradient-to-br from-primary to-secondary text-white rounded-full shadow-xl flex items-center justify-center hover:scale-105 active:scale-90 transition-all z-40">
+    <span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'wght' 600;">refresh</span>
+  </button>
+
+  <script src="js/api.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
